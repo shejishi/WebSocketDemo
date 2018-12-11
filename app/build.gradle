@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.appVersionCode
+        versionName rootProject.ext.android.appVersionName
+        testInstrumentationRunner "android.support.iuliao_test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation rootProject.ext.dependencies["junit"]
+    implementation rootProject.ext.dependencies["testRunner"]
+    implementation rootProject.ext.dependencies["espresso"]
+    implementation rootProject.ext.dependencies["supportV7"]
+    implementation rootProject.ext.dependencies["supportV4"]
+    implementation rootProject.ext.dependencies["supportDesign"]
+    implementation rootProject.ext.dependencies["constraint"]
+
+    // rxjava
+    implementation rootProject.ext.dependencies["rxjava"]
+    implementation rootProject.ext.dependencies["rxandroid"]
+    implementation rootProject.ext.dependencies["retrofit"]
+    implementation rootProject.ext.dependencies["rxjavaAdapter"]
+    implementation rootProject.ext.dependencies["rxbinding2"]
+
+    // fastJson
+    implementation rootProject.ext.dependencies["fastJson"]
+    implementation rootProject.ext.dependencies["fastJsonConverter"]
+
+    // okHttp
+    implementation rootProject.ext.dependencies["okhttp"]
+    implementation rootProject.ext.dependencies["okhttpLogging"]
+
+    implementation rootProject.ext.dependencies["multidex"]
+
+    // Uber 开源
+    implementation rootProject.ext.dependencies["autoDispose"]
+    implementation rootProject.ext.dependencies["autoDisposeArch"]
+}

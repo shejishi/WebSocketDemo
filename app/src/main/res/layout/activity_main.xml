@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:hint="输入WebSocket地址"
+        android:maxLines="1"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_connect"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1" />
+
+    <Button
+        android:id="@+id/btn_connect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="连接"
+        app:layout_constraintBottom_toTopOf="@+id/et_data"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_dis_connect"
+        app:layout_constraintTop_toBottomOf="@id/et"
+        app:layout_constraintVertical_weight="1" />
+
+    <Button
+        android:id="@+id/btn_dis_connect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="断开连接"
+        app:layout_constraintBottom_toBottomOf="@id/btn_connect"
+        app:layout_constraintLeft_toRightOf="@id/btn_connect"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_connect" />
+
+    <EditText
+        android:id="@+id/et_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:hint="输入数据"
+        android:maxLines="1"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_info"
+        app:layout_constraintHorizontal_weight="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_send"
+        app:layout_constraintTop_toBottomOf="@id/btn_connect"
+        app:layout_constraintVertical_weight="1" />
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="发送数据"
+        app:layout_constraintBottom_toBottomOf="@id/et_data"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintLeft_toRightOf="@id/et_data"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et"
+        app:layout_constraintTop_toTopOf="@id/et_data" />
+
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:lineSpacingExtra="5dp"
+        android:padding="10dp"
+        android:textColor="#333333"
+        android:scrollbars="vertical"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_data"
+        app:layout_constraintVertical_weight="9" />
+</android.support.constraint.ConstraintLayout>

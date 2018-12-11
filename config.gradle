@@ -1,0 +1,77 @@
+ext {
+    android = [
+            applicationId    : "com.ellison.websocket",
+            compileSdkVersion: 26,
+            buildToolsVersion: "28.0.3",
+            minSdkVersion    : 19,
+            targetSdkVersion : 26,
+            appVersionCode   : 1,
+            appVersionName   : "0.0.1",
+    ]
+
+    version = [
+            support            : "27.1.0",
+            kotlinJdkVersion   : "1.2.61",
+            junit              : "4.12",
+            testRunner         : "1.0.2",
+            espresso           : "3.0.2",
+            constraint         : "2.0.0-alpha1",
+
+            rxjava             : "2.2.4",
+            rxandroid          : "2.1.0",
+
+            retrofit           : "2.5.0",
+            rxjavaAdapter      : "2.3.0",
+            fastJsonConverter  : "2.1.0",
+            okhttp             : "3.12.0",
+            okhttpLogging      : "3.5.0",
+
+            multidex           : "1.0.3",
+            multitype          : "3.3.3",
+            rxbinding2         : "2.0.0",
+            fastJson           : "1.2.54",
+            logger             : "1.15",
+
+            autoDispose        : "0.8.0",
+    ]
+
+
+    dependencies = [
+
+            junit              : "junit:junit:${version["junit"]}",
+            testRunner         : "com.android.support.test:runner:${version["testRunner"]}",
+            espresso           : "com.android.support.test.espresso:espresso-core:${version["espresso"]}",
+
+            supportV7          : "com.android.support:appcompat-v7:${version["support"]}",
+            supportV4          : "com.android.support:support-v4:${version["support"]}",
+            supportDesign      : "com.android.support:design:${version["support"]}",
+
+            constraint         : "com.android.support.constraint:constraint-layout:${version["constraint"]}",
+
+            /* 添加Rxjava */
+            rxjava             : "io.reactivex.rxjava2:rxjava:${version["rxjava"]}",
+            rxandroid          : "io.reactivex.rxjava2:rxandroid:${version["rxandroid"]}",
+
+            /* 添加网络请求库 retrofit */
+            retrofit           : "com.squareup.retrofit2:retrofit:${version["retrofit"]}",
+            rxjavaAdapter      : "com.squareup.retrofit2:adapter-rxjava2:${version["rxjavaAdapter"]}",
+            fastJsonConverter  : "org.ligboy.retrofit2:converter-fastjson:${version["fastJsonConverter"]}",
+            okhttp             : "com.squareup.okhttp3:okhttp:${version["okhttp"]}",
+            okhttpLogging      : "com.squareup.okhttp3:logging-interceptor:${version["okhttpLogging"]}",
+            //    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+            /* 添加多dex打包支持 */
+            multidex           : "com.android.support:multidex:${version["multidex"]}",
+
+            /* 控件的点击事件绑定 */
+            rxbinding2         : "com.jakewharton.rxbinding2:rxbinding:${version["rxbinding2"]}",
+
+            /* FastJson 数据解析 */
+            fastJson           : "com.alibaba:fastjson:${version["fastJson"]}",
+
+            /* uber 开源框架解决Rxjava内存泄漏*/
+            autoDispose        : "com.uber.autodispose:autodispose-android:${version["autoDispose"]}",
+            autoDisposeArch    : "com.uber.autodispose:autodispose-android-archcomponents:${version["autoDispose"]}",
+
+    ]
+}
