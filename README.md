@@ -5,4 +5,5 @@ Rxjava2 + OkHttp webSocket 连接
 
 <iframe height=498 width=510 src="http://player.youku.com/embed/XNjcyMDU4Njg0">
 
-<iframe height=500 width=500 src="https://github.com/shejishi/WebSocketDemo/blob/master/gif/websocket%E6%B5%8B%E8%AF%95.gif">
+
+![图片](https://github.com/shejishi/WebSocketDemo/blob/master/gif/websocket%E6%B5%8B%E8%AF%95.gif)
