@@ -277,29 +277,35 @@ public class WebSocketService extends Service {
                 });
                 client.dispatcher().executorService().shutdown();
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<WebSocket>() {
-            @Override
-            public void accept(WebSocket webSocket) throws Exception {
-                if (pongService == null) {
-                    startPongDaemonService();
-                }
-            }
-        }, throwable -> {
-            Log.d(LOG_TAG, "WebSocket init failed!");
-            throwable.printStackTrace();
+        })
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<WebSocket>() {
+                               @Override
+                               public void accept(WebSocket webSocket) throws Exception {
+                                   if (pongService == null) {
+                                       startPongDaemonService();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.d(LOG_TAG, "WebSocket init failed!");
+                                throwable.printStackTrace();
 
-            // 判断是否需要执行诊断服务
-            if (connectionAttemptCount >= ATTEMPT_TOLERANCE) {
-                Log.e(LOG_TAG, "Continuous connection error occurred for " + connectionAttemptCount + " times!");
+                                // 判断是否需要执行诊断服务
+                                if (connectionAttemptCount >= ATTEMPT_TOLERANCE) {
+                                    Log.e(LOG_TAG, "Continuous connection error occurred for " + connectionAttemptCount + " times!");
 
-                // 强制开始诊断服务
-                Log.i(LOG_TAG, "Force starting diagnosis service");
-                startService(new Intent(WebSocketService.this, NetworkDiagnosisService.class));
+                                    // 强制开始诊断服务
+                                    Log.i(LOG_TAG, "Force starting diagnosis service");
+                                    startService(new Intent(WebSocketService.this, NetworkDiagnosisService.class));
 
-                // 重置标记
-                connectionAttemptCount = 0;
-            }
-        });
+                                    // 重置标记
+                                    connectionAttemptCount = 0;
+                                }
+                            }
+                        });
     }
 
     /**

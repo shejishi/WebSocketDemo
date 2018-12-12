@@ -18,8 +18,8 @@ import java.util.Locale;
 
 
 /**
- * @author Muyangmin
- * @since 1.0.0
+ * @author Ellison
+ * @desc 网络诊断服务
  */
 public class NetworkDiagnosisService extends Service {
 
@@ -46,21 +46,21 @@ public class NetworkDiagnosisService extends Service {
     public void startDiagnosis(Context context) {
         Log.i(LOG_TAG, "------------- Start Diagnosis ---------------");
         Log.i(LOG_TAG, "isNetworkConnected? : " + Networks.isNetworkConnected(context));
-        Log.i(LOG_TAG,"Network type = " + Networks.getNetworkType(context));
+        Log.i(LOG_TAG, "Network type = " + Networks.getNetworkType(context));
 
         pingWithLog("www.baidu.com", 3);
         pingWithLog("www.qq.com", 3);
 
-        Log.i(LOG_TAG,"REPEAT : isNetworkConnected? " + Networks.isNetworkConnected(context));
+        Log.i(LOG_TAG, "REPEAT : isNetworkConnected? " + Networks.isNetworkConnected(context));
         Log.i(LOG_TAG, "REPEAT : Network type = " + Networks.getNetworkType(context));
         Log.i(LOG_TAG, "------------- Finish Diagnosis ---------------");
 
-        Log.e(LOG_TAG,"Manual Diagnosis Finished " + new ManualWsDiagnosisException());
+        Log.e(LOG_TAG, "Manual Diagnosis Finished " + new ManualWsDiagnosisException());
         stopSelf();
     }
 
     private void pingWithLog(String host, int count) {
-        Log.i(LOG_TAG,"Ping host " + host);
+        Log.i(LOG_TAG, "Ping host " + host);
         if (Networks.isNetworkConnected(MyApp.getApplication())) {
             ping(host, count);
         } else {
@@ -82,7 +82,7 @@ public class NetworkDiagnosisService extends Service {
             }
             in.close();
         } catch (IOException e) {
-            Log.e(LOG_TAG,"Failed to ping host " + host + e);
+            Log.e(LOG_TAG, "Failed to ping host " + host + e);
         } finally {
             if (process != null) {
                 process.destroy();
