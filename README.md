@@ -26,5 +26,5 @@ Rxjava2 + OkHttp webSocket 连接
 ![从layout中加载后](https://github.com/shejishi/WebSocketDemo/blob/master/gif/layout%E4%B8%AD%E5%8A%A0%E8%BD%BD%E5%90%8E.png)
 
 ####  从RecyclerView中加载
-![]()
-![]()
+![RecyclerView截图前](https://github.com/shejishi/WebSocketDemo/blob/master/gif/recycler_view_%E6%88%AA%E5%9B%BE%E5%89%8D.jpeg)
+![RecyclerView截图](https://github.com/shejishi/WebSocketDemo/blob/master/gif/recycler_view_%E6%88%AA%E5%9B%BE%E5%90%8E.jpg)
