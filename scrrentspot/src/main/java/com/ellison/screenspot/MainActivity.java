@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity {
         });
         subscribeClick(findViewById(R.id.btn_common_recycler_spot), action -> {
             // 普通RecyclerView截图
+            startActivity(new Intent(MainActivity.this, RecyclerViewActivity.class));
         });
     }
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/recycler_view_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        tools:text="测试文字测试文字测试文字测试文字测试文字测试文字测试文字" />
+
+    <ImageView
+        android:id="@+id/recycler_view_iv_left"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerInside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/recycler_view_iv_center"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_tv_title" />
+
+    <ImageView
+        android:id="@+id/recycler_view_iv_center"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_view_iv_left"
+        app:layout_constraintLeft_toRightOf="@id/recycler_view_iv_left"
+        app:layout_constraintRight_toLeftOf="@+id/recycler_view_iv_right"
+        app:layout_constraintTop_toTopOf="@id/recycler_view_iv_left" />
+
+    <ImageView
+        android:id="@+id/recycler_view_iv_right"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_view_iv_left"
+        app:layout_constraintLeft_toRightOf="@id/recycler_view_iv_center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/recycler_view_iv_left" />
+
+    <TextView
+        android:id="@+id/recycler_view_tv_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999999"
+        android:textSize="10sp"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_iv_left"
+        tools:text="测试评论" />
+
+    <View
+        android:id="@+id/recycler_view_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="#EEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_tv_bottom" />
+</android.support.constraint.ConstraintLayout>
