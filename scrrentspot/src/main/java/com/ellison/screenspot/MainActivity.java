@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivity {
         });
         subscribeClick(findViewById(R.id.btn_common_layout_spot), action -> {
             // 从layout截图
+            startActivity(new Intent(MainActivity.this, LayoutScreenSpotActivity.class));
         });
         subscribeClick(findViewById(R.id.btn_common_spot_canvas), action -> {
             // 普通截图 canvas截图

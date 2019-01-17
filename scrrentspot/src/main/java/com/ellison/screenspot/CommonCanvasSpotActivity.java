@@ -1,7 +1,6 @@
 package com.ellison.screenspot;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

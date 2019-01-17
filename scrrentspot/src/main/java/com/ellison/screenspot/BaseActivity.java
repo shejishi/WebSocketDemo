@@ -35,4 +35,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .subscribe(consumer);
     }
 
+
+    protected int getWidth() {
+        return getResources().getDisplayMetrics().heightPixels;
+    }
+
+    protected int getHeight() {
+        return getResources().getDisplayMetrics().widthPixels;
+    }
+
 }

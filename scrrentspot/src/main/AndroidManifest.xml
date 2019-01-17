@@ -15,21 +15,17 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-        <activity android:name=".BlueActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BlueActivity">
+        </activity>
         <activity android:name=".CommonSpotActivity" />
         <activity android:name=".CommonCanvasSpotActivity" />
+        <activity android:name=".LayoutScreenSpotActivity" />
     </application>
 
 </manifest>
