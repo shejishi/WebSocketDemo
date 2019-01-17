@@ -27,4 +27,6 @@ Rxjava2 + OkHttp webSocket 连接
 
 ####  从RecyclerView中加载
 ![RecyclerView截图前](https://github.com/shejishi/WebSocketDemo/blob/master/gif/recycler_view_%E6%88%AA%E5%9B%BE%E5%89%8D.jpeg)
+
+#### recyclerView 中获取到的长图
 ![RecyclerView截图](https://github.com/shejishi/WebSocketDemo/blob/master/gif/recycler_view_%E6%88%AA%E5%9B%BE%E5%90%8E.jpg)
