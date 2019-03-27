@@ -30,6 +30,10 @@ public class MainActivity extends BaseActivity {
             // 普通RecyclerView截图
             startActivity(new Intent(MainActivity.this, RecyclerViewActivity.class));
         });
+        subscribeClick(findViewById(R.id.btn_start_blue), a -> {
+            // 蓝牙
+            startActivity(new Intent(MainActivity.this, BlueActivity.class));
+        });
     }
 
 }
