@@ -269,9 +269,11 @@ public class WebSocketService extends Service {
                     @Override
                     public void onFailure(WebSocket webSocket, Throwable t, @javax.annotation.Nullable Response response) {
                         super.onFailure(webSocket, t, response);
-                        dispatchStringMessage("连接失败！！！");
+                        if (!emitter.isDisposed()) {
+                            dispatchStringMessage("连接失败！！！");
 
-                        emitter.onError(t != null ? t : new ConnectException("Cannot connect we service!!!"));
+                            emitter.onError(t != null ? t : new ConnectException("Cannot connect we service!!!"));
+                        }
                     }
 
                 });
