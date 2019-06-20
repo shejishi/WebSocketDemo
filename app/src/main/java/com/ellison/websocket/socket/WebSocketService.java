@@ -171,7 +171,7 @@ public class WebSocketService extends Service {
      * @param startReason
      * @param isFirstConnect
      */
-    private void initSocketWrapper(String startReason, boolean isFirstConnect) {
+    public void initSocketWrapper(String startReason, boolean isFirstConnect) {
         Observable.just(startReason)
                 .filter(new Predicate<String>() {
                     @Override
@@ -353,6 +353,7 @@ public class WebSocketService extends Service {
     public void prepareShutDown() {
         Log.i(LOG_TAG, "----- prepareShutdown -----");
         preparedShutdown = true;
+        isAttemptConnecting = false;
 
         stopSelfCheckService();
         stopPongDaemonService();

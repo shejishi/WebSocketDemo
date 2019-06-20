@@ -40,6 +40,7 @@ public class WebSocketActivity extends AppCompatActivity {
      */
     private boolean isConnected = false;
 
+    private boolean mIsCreateService;
     /**
      * WebSocket服务
      */
@@ -77,7 +78,13 @@ public class WebSocketActivity extends AppCompatActivity {
                             return;
                         }
                         // 连接结果
-                        isConnected = bindService(WebSocketService.createIntent(WebSocketActivity.this, mEt.getText().toString()), wsConnection, BIND_AUTO_CREATE);
+                        if(!mIsCreateService) {
+                            mIsCreateService = bindService(WebSocketService.createIntent(WebSocketActivity.this, mEt.getText().toString()), wsConnection, BIND_AUTO_CREATE);
+                        } else {
+                            if(mWebSocketService!=null) {
+                                mWebSocketService.initSocketWrapper("InitialConnect", true);
+                            }
+                        }
                     }
                 });
 
@@ -132,7 +139,9 @@ public class WebSocketActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unRegisterSocketAndBroadcast();
+        if(mIsCreateService) {
+            unRegisterSocketAndBroadcast();
+        }
     }
 
     /**
