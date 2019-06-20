@@ -98,6 +98,8 @@ public class WebSocketService extends Service {
      */
     private HashMap<String, WsListener<?>> activeListener = new HashMap<>();
 
+    private WsStatusListener mWsStatusListener;
+
     private WebSocket mWebSocket;
     private String socketUrl;
 
@@ -208,87 +210,121 @@ public class WebSocketService extends Service {
         Log.v(LOG_TAG, "Set isAttemptConnecting flag to true");
 
         // 开始初始化
-        Observable.create(new ObservableOnSubscribe<WebSocket>() {
-            @Override
-            public void subscribe(ObservableEmitter<WebSocket> emitter) throws Exception {
-                connectionAttemptCount++;
-                Log.d(LOG_TAG, "Connection attempt: " + connectionAttemptCount);
+        Observable
+                .create(
+                        new ObservableOnSubscribe<WebSocket>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<WebSocket> emitter) throws Exception {
+                                connectionAttemptCount++;
+                                Log.d(LOG_TAG, "Connection attempt: " + connectionAttemptCount);
 
-                //TODO 这里可以进行登录业务判断
+                                //TODO 这里可以进行登录业务判断
 
-                Request request = new Request.Builder()
-                        .url(socketUrl)
-                        .build();
-                OkHttpClient client = new OkHttpClient();
-                client.newWebSocket(request, new WebSocketListener() {
-                    @Override
-                    public void onOpen(WebSocket webSocket, Response response) {
-                        super.onOpen(webSocket, response);
+                                Request request = new Request.Builder()
+                                        .url(socketUrl)
+                                        .build();
+                                OkHttpClient client = new OkHttpClient();
+                                client.newWebSocket(request, new WebSocketListener() {
+                                    @Override
+                                    public void onOpen(WebSocket webSocket, Response response) {
+                                        super.onOpen(webSocket, response);
 
-                        isAttemptConnecting = false;
-                        connectionAttemptCount = 0;
+                                        isAttemptConnecting = false;
+                                        connectionAttemptCount = 0;
 
-                        // 连接成功之后
-                        mWebSocket = webSocket;
+                                        // 连接成功之后
+                                        mWebSocket = webSocket;
 
-                        dispatchStringMessage("连接成功！！！");
+                                        dispatchStringMessage("连接成功！！！");
 
-                        emitter.onNext(mWebSocket);
-                        emitter.onComplete();
-                    }
+                                        emitter.onNext(mWebSocket);
+                                        emitter.onComplete();
 
-                    @Override
-                    public void onMessage(WebSocket webSocket, String text) {
-                        super.onMessage(webSocket, text);
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onOpen(webSocket, response);
+                                        }
+                                    }
 
-                        dispatchStringMessage(text);
-                    }
+                                    @Override
+                                    public void onMessage(WebSocket webSocket, String text) {
+                                        super.onMessage(webSocket, text);
 
-                    @Override
-                    public void onMessage(WebSocket webSocket, ByteString bytes) {
-                        super.onMessage(webSocket, bytes);
-                    }
+                                        dispatchStringMessage(text);
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onMessage(webSocket, text);
+                                        }
+                                    }
 
-                    @Override
-                    public void onClosing(WebSocket webSocket, int code, String reason) {
-                        super.onClosing(webSocket, code, reason);
-                    }
+                                    @Override
+                                    public void onMessage(WebSocket webSocket, ByteString bytes) {
+                                        super.onMessage(webSocket, bytes);
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onMessage(webSocket, bytes);
+                                        }
+                                    }
 
-                    @Override
-                    public void onClosed(WebSocket webSocket, int code, String reason) {
-                        super.onClosed(webSocket, code, reason);
+                                    @Override
+                                    public void onClosing(WebSocket webSocket, int code, String reason) {
+                                        super.onClosing(webSocket, code, reason);
+                                        Log.i(LOG_TAG, "onClosing: WebSocket onClosing.");
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onClosing(webSocket, code, reason);
+                                        }
+                                    }
 
-                        Log.i(LOG_TAG, "ClosedCallback: WebSocket closed.");
+                                    @Override
+                                    public void onClosed(WebSocket webSocket, int code, String reason) {
+                                        super.onClosed(webSocket, code, reason);
 
-                        // 等待自检重启，或者自然关闭
-                        if ((!preparedShutdown) && (shouldAutoReconnect)) {
-                            initSocketWrapper("onClose");
+                                        Log.i(LOG_TAG, "ClosedCallback: WebSocket closed.");
+
+                                        isAttemptConnecting = false;
+
+                                        // 等待自检重启，或者自然关闭
+                                        if ((!preparedShutdown) && (shouldAutoReconnect)) {
+                                            initSocketWrapper("onClose");
+                                        }
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onClosed(webSocket, code, reason);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(WebSocket webSocket, Throwable t, @javax.annotation.Nullable Response response) {
+                                        super.onFailure(webSocket, t, response);
+                                        Log.i(LOG_TAG, "onFailure: WebSocket onFailure.");
+
+                                        // 断网非正常关闭
+                                        mWebSocket = null;
+                                        isAttemptConnecting = false;
+
+                                        if (!emitter.isDisposed()) {
+
+                                            dispatchStringMessage("连接失败！！！");
+
+                                            emitter.onError(t != null ? t : new ConnectException("Cannot connect we service!!!"));
+                                        }
+
+                                        if (mWsStatusListener != null) {
+                                            mWsStatusListener.onFailure(webSocket, t, response);
+                                        }
+                                    }
+
+                                });
+                                client.dispatcher().executorService().shutdown();
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onFailure(WebSocket webSocket, Throwable t, @javax.annotation.Nullable Response response) {
-                        super.onFailure(webSocket, t, response);
-                        if (!emitter.isDisposed()) {
-                            dispatchStringMessage("连接失败！！！");
-
-                            emitter.onError(t != null ? t : new ConnectException("Cannot connect we service!!!"));
-                        }
-                    }
-
-                });
-                client.dispatcher().executorService().shutdown();
-            }
-        })
+                )
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<WebSocket>() {
-                               @Override
-                               public void accept(WebSocket webSocket) throws Exception {
-                                   if (pongService == null) {
-                                       startPongDaemonService();
-                                   }
-                               }
-                           },
+                .subscribe(
+                        new Consumer<WebSocket>() {
+                            @Override
+                            public void accept(WebSocket webSocket) throws Exception {
+                                if (pongService == null) {
+                                    startPongDaemonService();
+                                }
+                            }
+                        },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
@@ -307,7 +343,8 @@ public class WebSocketService extends Service {
                                     connectionAttemptCount = 0;
                                 }
                             }
-                        });
+                        }
+                );
     }
 
     /**
@@ -562,6 +599,10 @@ public class WebSocketService extends Service {
 
         String msg = JSON.toJSONString(request);
         Log.d(LOG_TAG, "sending msg: " + msg);
+        if (mWebSocket == null) {
+            showUiWebSocketStatus("与服务器失去连接！！！");
+            return;
+        }
         mWebSocket.send(msg);
     }
 
@@ -592,6 +633,15 @@ public class WebSocketService extends Service {
     public void removeAllListeners() {
         Log.i(LOG_TAG, "Removing all listeners, count= " + activeListener.size());
         activeListener.clear();
+    }
+
+    /**
+     * register status listener
+     *
+     * @param listener
+     */
+    public void setWebSocketStatusListener(WsStatusListener listener) {
+        this.mWsStatusListener = listener;
     }
 
 }

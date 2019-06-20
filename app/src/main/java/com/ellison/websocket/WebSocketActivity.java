@@ -1,24 +1,22 @@
 package com.ellison.websocket;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.text.format.Time;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ellison.websocket.request.WsRequest;
 import com.ellison.websocket.request.WsStringRequest;
 import com.ellison.websocket.socket.SocketConstants;
 import com.ellison.websocket.socket.WebSocketService;
 import com.ellison.websocket.socket.WsListener;
+import com.ellison.websocket.socket.WsStatusListener;
 import com.ellison.websocket.utils.RxLifecycleUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -26,13 +24,16 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Consumer;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okio.ByteString;
 
 /**
  * @author ellison
  */
-public class MainActivity extends AppCompatActivity {
+public class WebSocketActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "WebSocketActivity";
 
     /**
      * 来判断是否Service是否连接
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         // 连接结果
-                        isConnected = bindService(WebSocketService.createIntent(MainActivity.this, mEt.getText().toString()), wsConnection, BIND_AUTO_CREATE);
+                        isConnected = bindService(WebSocketService.createIntent(WebSocketActivity.this, mEt.getText().toString()), wsConnection, BIND_AUTO_CREATE);
                     }
                 });
 
@@ -119,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                         // 发送消息
                         mWebSocketService.sendRequest(new WsStringRequest(mEtData.getText().toString()));
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, throwable.toString());
+                    }
                 });
     }
 
@@ -160,6 +166,37 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         mTvInfo.setText("接收服务器数据: " + o.toString());
                     }
+                }
+            });
+
+            mWebSocketService.setWebSocketStatusListener(new WsStatusListener() {
+                @Override
+                public void onOpen(WebSocket webSocket, Response response) {
+                    isConnected = true;
+                }
+
+                @Override
+                public void onMessage(WebSocket webSocket, String text) {
+
+                }
+
+                @Override
+                public void onMessage(WebSocket webSocket, ByteString bytes) {
+
+                }
+
+                @Override
+                public void onClosing(WebSocket webSocket, int code, String reason) {
+                }
+
+                @Override
+                public void onClosed(WebSocket webSocket, int code, String reason) {
+                    isConnected = false;
+                }
+
+                @Override
+                public void onFailure(WebSocket webSocket, Throwable t, @javax.annotation.Nullable Response response) {
+                    isConnected = false;
                 }
             });
         }
